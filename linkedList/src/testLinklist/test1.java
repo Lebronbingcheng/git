@@ -18,7 +18,11 @@ public class test1 {
 		/*list.displayAllNodes();
 		l.displayAllNodes();*/
 		l.conLinkList(l, list);
-		l.displayAllNodes();
+		//l.displayAllNodes();
+		
+		LinkList a = new LinkList(l);
+		a.displayAllNodes();
+		
 		
 	}
 }
