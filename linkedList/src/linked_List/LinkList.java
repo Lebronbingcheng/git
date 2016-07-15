@@ -4,19 +4,24 @@ public class LinkList {
 	Node head = null;
 	int length;
 	
-	public LinkList(){}
+	public LinkList(){
+		length = 0;
+	}
 	
 	public LinkList(Node a){
 		head = a;
+		length = 1;
 	}
 	
 	public LinkList(Object obj, Node a){
 		Node head = new Node(obj);
 	    head.setNext(a);
+	    length = 2;
 	}
 	
 	public LinkList(LinkList list){
 		this.head = list.head;
+		length = list.getLength();
 	}
 	
 	/*判断链表是否为空*/
@@ -26,74 +31,45 @@ public class LinkList {
 	
 	/*清空链表*/
 	public void clear(){
-		length = this.getLength();
 		for(int i = 0; i < length; i++){
 			this.deleteHeadNode();
 		}
 		/*while(head != null){
 			this.deleteHeadNode();
 		}*/
+		length = 0;
 	}
 	
 	/*改变一个结点*/
 	public void changeNode(int index, Object obj, Node next){
-		if(this.isEmpty()){
-		    System.out.println("empty linklist");
+		if(this.isValue(index) == false){
+			System.out.println("wrong");
 			return;
 		}
-		if(index < 0){
-			System.out.println("input wrong index");
-			return;
+		Node current = this.findNode(index);
+		if(current != null){
+		    current.setObj(obj);
+		    current.setNext(next);
+		    return;
 		}
-		Node current = head;
-		for(int pos = 0; pos < index; pos++){
-			current = current.getNext();
-			if(current == null){
-				System.out.println("input wrong index");
-				return;
-			}
-		}	
-		current.setObj(obj);
-		current.setNext(next);
+		System.out.println("failed to change");
 	}
 	
 	public void changeNode(int index, Object obj){
-		if(this.isEmpty()){
-		    System.out.println("empty linklist");
+		if(this.isValue(index) == false){
+			System.out.println("wrong");
 			return;
 		}
-		if(index < 0){
-			System.out.println("input wrong index");
-			return;
-		}
-		Node current = head;
-		for(int pos = 0; pos < index; pos++){
-			current = current.getNext();
-			if(current == null){
-				System.out.println("input wrong index");
-				return;
-			}
-		}	
+		Node current = this.findNode(index);
 		this.changeNode(index, obj, current.getNext());
 	}
 	
 	public void changeNode(int index, Node next){
-		if(this.isEmpty()){
-		    System.out.println("empty linklist");
+		if(this.isValue(index) == false){
+			System.out.println("wrong");
 			return;
 		}
-		if(index < 0){
-			System.out.println("input wrong index");
-			return;
-		}
-		Node current = head;
-		for(int pos = 0; pos < index; pos++){
-			current = current.getNext();
-			if(current == null){
-				System.out.println("input wrong index");
-				return;
-			}
-		}	
+		Node current = this.findNode(index);
 		this.changeNode(index, current.getObj(), next);
 	}
 	
@@ -102,19 +78,23 @@ public class LinkList {
 		Node node = new Node(obj);
 		if(this.isEmpty()){
 			head = node;
+			length++;
 			return;
 		}
 		node.setNext(head);
 		head = node;
+		length++;
 	}
 	
 	public void addHeadNode(Node a){
 		if(this.isEmpty()){
 			head = a;
+			length++;
 			return;
 		}
 		a.setNext(head);
 		head = a;
+		length++;
 	}
 	
 	/*删除头结点*/
@@ -125,6 +105,7 @@ public class LinkList {
 		}
 		Node current = head;
 		head = current.getNext();
+		length--;
 	}
 	
 	/*在任意位置添加节点,在index个结点加入新节点*/
@@ -137,7 +118,7 @@ public class LinkList {
 			 System.out.println("new node has been seen as head");
 			 head = node;
 		 }
-		 if(index < 0){
+		 if(index < 0 || index > length - 1){
 			 System.out.println("wrong index");
 			 return;
 		 }
@@ -145,6 +126,7 @@ public class LinkList {
 			 node.setNext(head);
 			 head = node;
 			 System.out.println("success to add");
+			 length++;
 			 return;
 		 }
 		 while (pos != index) 
@@ -162,6 +144,7 @@ public class LinkList {
 		 node.setNext(current);
 		 System.out.println("success to add");
 		 pos = 0;
+		 length++;
 	}
 	
 	/*在链表尾部添加结点*/
@@ -171,7 +154,6 @@ public class LinkList {
 			return;
 		}
 		Node current = head;
-		length = this.getLength();
 		for(int i = 0; i < length - 1; i++){
 			current = current.getNext();
 		}
@@ -179,6 +161,7 @@ public class LinkList {
 			current = current.getNext();
 		}*/
 		current.setNext(node);
+		length++;
 	}
 	
 	/*删除头结点*/
@@ -189,21 +172,18 @@ public class LinkList {
 		}
 		Node current = head;
 		head = current.getNext();
+		length--;
 	}
 	
 	/*删除任意位置节点*/
 	public void deleteAndPosition(int index){		
 	    int pos = 0;
 		Node current = head;  
-        Node previous = head;   
-        if(head == null){
-        	 System.out.println("empty linklist");
-        	 return;
-        }
-        if(index < 0){
-			 System.out.println("wrong index");
-			 return;
-		 }
+        Node previous = head;
+        if(this.isValue(index) == false){
+			System.out.println("wrong");
+			return;
+		}
         while (pos!= index){  
             pos++;  
             previous = current;  
@@ -213,30 +193,19 @@ public class LinkList {
         	System.out.println("failed to delete");
         	return;
         }
-        if(this.isEmpty()){
-        	System.out.println("the link is empty");
-        	return;
-        }
         if(current == head){          	 
             head = head.getNext();
+            length--;
         } else{     	
             Node tap = current.getNext();
             previous.setNext(tap);
-            pos = 0; 
+            pos = 0;
+            length--;
         }  
    }
 	
    /*求结点个数，也就是链表长度*/
    public int getLength(){
-	   int length = 0;
-	   Node current = head;
-	   if(this.isEmpty()){
-		   return 0;
-	   }
-	   while(current != null){
-		   length++;
-		   current = current.getNext();
-	   }
 	   return length;
    }
 	
@@ -246,33 +215,25 @@ public class LinkList {
 	       System.out.println("empty linklist");
 		   return;
 	   }
-	   if(index < 0){
+	   if(index < 0 || index > length - 1){
 		   System.out.println("input wrong index");
 		   return;
 	   }
-	   Node current = head;
-	   for(int pos = 0; pos < index; pos++){
-		   current = current.getNext();
-		   if(current == null){
-			   System.out.println("input wrong index");
-			   return;
-		   }
-	   }	
-		current.showNode(current);
+	   Node current = this.findNode(index);
+	   current.showNode(current);
    }
 	
    /*打印所有结点*/
    public void displayAllNodes(){
-       Node current = head; 
-       length = this.getLength();
-       for(int i = 0; i < length; i++){
+       Node current = head;      
+      /* for(int i = 0; i < length - 1; i++){
     	   current.showNode(current);
     	   current = current.getNext();
-       }
-     /*  while (current != null){
+       }*/
+      while (current != null){
            current.showNode(current);  
            current = current.getNext();  
-       }  */
+       }  
    }  
 	
    /*合并两个链表*/
@@ -282,7 +243,6 @@ public class LinkList {
 		   return null;
 	   }else{
 		   Node current = a.head;
-		   length = this.getLength();
 		   for(int i = 0; i < length - 1; i++){
 			   current = current.getNext();
 		   }
@@ -290,7 +250,29 @@ public class LinkList {
 			   current = current.getNext();
 		   }*/
 		   current.setNext(b.head);
+		   length = a.getLength() + b.getLength();
 		   return a;
 	   }
+   }
+   
+   /*判断输入是否有效*/
+   public boolean isValue(int index){
+	   if(this.isEmpty() || index < 0 || index > length - 1){
+		   return false;
+	   }
+	   return true;
+   }
+   
+   /*根据index找到链表中的结点*/
+   public Node findNode(int index){
+	   Node current = head;
+	   for(int pos = 0; pos < index; pos++){
+			current = current.getNext();
+			if(current == null){
+				System.out.println("input wrong index");
+				return null;
+			}
+		}
+	   return current;
    }
 }

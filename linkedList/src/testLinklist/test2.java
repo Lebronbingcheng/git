@@ -18,9 +18,11 @@ public class test2 {
 		l.addLastPosition(ad);
 		//l.displayAllNodes();
 		//l.deleteAndPosition(5);
-		//l.changeNode(2, "dfa");
+		//l.changeNode(9, "dfa", ad);
 		
-		l.displayAllNodes();
+		//l.displayAllNodes();
+		l.displayAnyNode(8);
+		System.out.println(l.getLength());
 		//l.displayAnyNode(0);
 		//System.out.println(l.getLength());
 		
