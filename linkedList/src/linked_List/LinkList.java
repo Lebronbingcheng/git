@@ -2,6 +2,7 @@ package linked_List;
 
 public class LinkList {
 	Node head = null;
+	int length;
 	
 	public LinkList(){}
 	
@@ -25,13 +26,13 @@ public class LinkList {
 	
 	/*清空链表*/
 	public void clear(){
-		int length = this.getLength();
-		/*for(int i = 0; i < length; i++){
-			this.deleteHeadNode();
-		}*/
-		while(head != null){
+		length = this.getLength();
+		for(int i = 0; i < length; i++){
 			this.deleteHeadNode();
 		}
+		/*while(head != null){
+			this.deleteHeadNode();
+		}*/
 	}
 	
 	/*改变一个结点*/
@@ -170,9 +171,13 @@ public class LinkList {
 			return;
 		}
 		Node current = head;
-		while(current.getNext() != null){
+		length = this.getLength();
+		for(int i = 0; i < length - 1; i++){
 			current = current.getNext();
 		}
+		/*while(current.getNext() != null){
+			current = current.getNext();
+		}*/
 		current.setNext(node);
 	}
 	
@@ -258,11 +263,16 @@ public class LinkList {
 	
    /*打印所有结点*/
    public void displayAllNodes(){
-       Node current = head;  
-       while (current != null){
+       Node current = head; 
+       length = this.getLength();
+       for(int i = 0; i < length; i++){
+    	   current.showNode(current);
+    	   current = current.getNext();
+       }
+     /*  while (current != null){
            current.showNode(current);  
            current = current.getNext();  
-       }  
+       }  */
    }  
 	
    /*合并两个链表*/
@@ -272,9 +282,13 @@ public class LinkList {
 		   return null;
 	   }else{
 		   Node current = a.head;
-		   while(current.getNext() != null){
+		   length = this.getLength();
+		   for(int i = 0; i < length - 1; i++){
 			   current = current.getNext();
 		   }
+		  /* while(current.getNext() != null){
+			   current = current.getNext();
+		   }*/
 		   current.setNext(b.head);
 		   return a;
 	   }
