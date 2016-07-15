@@ -13,8 +13,8 @@ public class LinkList {
 		length = 1;
 	}
 	
-	public LinkList(Object obj, Node a){
-		Node head = new Node(obj);
+	public LinkList(int data, Node a){
+		Node head = new Node(data);
 	    head.setNext(a);
 	    length = 2;
 	}
@@ -31,51 +31,48 @@ public class LinkList {
 	
 	/*清空链表*/
 	public void clear(){
-		for(int i = 0; i < length; i++){
+		while(head != null){
 			this.deleteHeadNode();
 		}
-		/*while(head != null){
-			this.deleteHeadNode();
-		}*/
 		length = 0;
 	}
 	
 	/*改变一个结点*/
-	public void changeNode(int index, Object obj, Node next){
-		if(this.isValue(index) == false){
+	public void changeNode(int index, int data, Node next){
+		if(! this.isValueIndex(index)){
 			System.out.println("wrong");
 			return;
 		}
 		Node current = this.findNode(index);
 		if(current != null){
-		    current.setObj(obj);
+		    current.setData(data);
 		    current.setNext(next);
 		    return;
 		}
 		System.out.println("failed to change");
 	}
 	
-	public void changeNode(int index, Object obj){
-		if(this.isValue(index) == false){
+	public void changeNode(int index, int data){
+		if(!this.isValueIndex(index)){
 			System.out.println("wrong");
 			return;
 		}
 		Node current = this.findNode(index);
-		this.changeNode(index, obj, current.getNext());
+		this.changeNode(index, data, current.getNext());
 	}
 	
 	public void changeNode(int index, Node next){
-		if(this.isValue(index) == false){
+		if(!this.isValueIndex(index)){
 			System.out.println("wrong");
 			return;
 		}
 		Node current = this.findNode(index);
-		this.changeNode(index, current.getObj(), next);
+		this.changeNode(index, current.getData(), next);
 	}
 	
 	/*添加头节点*/
-	public void addHeadNode(Object obj){
-		Node node = new Node(obj);
+	public void addHeadNode(int data){
+		Node node = new Node(data);
 		if(this.isEmpty()){
 			head = node;
 			length++;
@@ -109,9 +106,9 @@ public class LinkList {
 	}
 	
 	/*在任意位置添加节点,在index个结点加入新节点*/
-	public void addAnyPosition(int index, Object obj){
+	public void addAnyPosition(int index, int data){
 		 int pos = 0;
-		 Node node = new Node(obj);
+		 Node node = new Node(data);
 		 Node current = head;
 		 Node previous = head;
 		 if(this.isEmpty()){
@@ -157,9 +154,6 @@ public class LinkList {
 		for(int i = 0; i < length - 1; i++){
 			current = current.getNext();
 		}
-		/*while(current.getNext() != null){
-			current = current.getNext();
-		}*/
 		current.setNext(node);
 		length++;
 	}
@@ -180,7 +174,7 @@ public class LinkList {
 	    int pos = 0;
 		Node current = head;  
         Node previous = head;
-        if(this.isValue(index) == false){
+        if(!this.isValueIndex(index)){
 			System.out.println("wrong");
 			return;
 		}
@@ -211,12 +205,8 @@ public class LinkList {
 	
    /*打印第n个结点*/
    public void displayAnyNode(int index){
-	   if(this.isEmpty()){
-	       System.out.println("empty linklist");
-		   return;
-	   }
-	   if(index < 0 || index > length - 1){
-		   System.out.println("input wrong index");
+	   if(!this.isValueIndex(index)){
+		   System.out.println("wrong");
 		   return;
 	   }
 	   Node current = this.findNode(index);
@@ -225,12 +215,8 @@ public class LinkList {
 	
    /*打印所有结点*/
    public void displayAllNodes(){
-       Node current = head;      
-      /* for(int i = 0; i < length - 1; i++){
-    	   current.showNode(current);
-    	   current = current.getNext();
-       }*/
-      while (current != null){
+       Node current = head;   
+       while (current != null){
            current.showNode(current);  
            current = current.getNext();  
        }  
@@ -238,7 +224,7 @@ public class LinkList {
 	
    /*合并两个链表*/
    public LinkList conLinkList(LinkList a, LinkList b){
-	   if(a.isEmpty()|| b.isEmpty()){
+	   if(a.isEmpty() || b.isEmpty()){
 		   System.out.println("intput wrong linklist");
 		   return null;
 	   }else{
@@ -246,9 +232,6 @@ public class LinkList {
 		   for(int i = 0; i < length - 1; i++){
 			   current = current.getNext();
 		   }
-		  /* while(current.getNext() != null){
-			   current = current.getNext();
-		   }*/
 		   current.setNext(b.head);
 		   length = a.getLength() + b.getLength();
 		   return a;
@@ -256,7 +239,7 @@ public class LinkList {
    }
    
    /*判断输入是否有效*/
-   public boolean isValue(int index){
+   public boolean isValueIndex(int index){
 	   if(this.isEmpty() || index < 0 || index > length - 1){
 		   return false;
 	   }

@@ -2,24 +2,24 @@ package linked_List;
 
 public class Node {
 	private Node next;             //结点中的指针域,指向下一个结点
-	private Object obj;            //结点中的数据域
+	private int data;            //结点中的数据域
 	
 	public Node(){
-		this.obj = null;
+		this.data = 0;
 		this.next = null;
 	}
 	
-	public Node(Object obj){
-		this.obj = obj;
+	public Node(int data){
+		this.data = data;
 		this.next = null;
 	}
 	
-	public Object getObj(){
-		return obj;
+	public int getData(){
+		return data;
 	}
 	
-	public void setObj(Object obj){
-		this.obj = obj;
+	public void setData(int data){
+		this.data = data;
 	}
 	
 	public Node getNext(){
@@ -31,7 +31,7 @@ public class Node {
 	}
 	
 	public void showNode(Node a){
-		Object obj = a.getObj();
-		System.out.print(obj+" ");
+		int data = a.getData();
+		System.out.print(data+" ");
 	}
 }
