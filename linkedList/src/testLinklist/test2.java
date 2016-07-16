@@ -20,10 +20,12 @@ public class test2 {
 		//list.deleteAndPosition(4);
 		//LinkList list2 = new LinkList();
 		//list.addHeadNode(23);
-		//list.addHeadNode(23);
+		list.addHeadNode(77);
 		/*list.displayAllNodes();
 		list2.displayAllNodes();*/
 		//list.conLinkList(list, list2);
-		list.displayAllNodes();	
+		LinkList l = list.findAllPrime();
+		//list.displayAllNodes();
+		l.displayAllNodes();
 	}
 }

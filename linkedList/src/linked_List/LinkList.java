@@ -1,8 +1,8 @@
 package linked_List;
 
 public class LinkList {
-	Node head = null;
-	int length;
+	private Node head = null;
+	private int length;
 	
 	public LinkList(){
 		length = 0;
@@ -44,12 +44,9 @@ public class LinkList {
 			return;
 		}
 		Node current = this.findNode(index);
-		if(current != null){
-		    current.setData(data);
-		    current.setNext(next);
-		    return;
-		}
-		System.out.println("failed to change");
+		current.setData(data);
+		current.setNext(next);
+		return;
 	}
 	
 	public void changeNode(int index, int data){
@@ -106,17 +103,12 @@ public class LinkList {
 	}
 	
 	/*在任意位置添加节点,在index个结点加入新节点*/
-	public void addAnyPosition(int index, int data){
-		 int pos = 0;
+	public void addAnyPosition(int index, int data){		 
 		 Node node = new Node(data);
 		 Node current = head;
 		 Node previous = head;
-		 if(this.isEmpty()){
-			 System.out.println("new node has been seen as head");
-			 head = node;
-		 }
-		 if(index < 0 || index > length - 1){
-			 System.out.println("wrong index");
+		 if(! this.isValueIndex(index)){
+			 System.out.println("wrong");
 			 return;
 		 }
 		 if (index == 0){
@@ -126,21 +118,16 @@ public class LinkList {
 			 length++;
 			 return;
 		 }
+		 int pos = 0;
 		 while (pos != index) 
 		 {
 			 previous = current;              
 			 current = current.getNext();
 			 pos++;
 		 }
-		 if(current == null)
-		 {
-			 System.out.println("failed to add");
-			 return;
-		 }
 		 previous.setNext(node);
 		 node.setNext(current);
 		 System.out.println("success to add");
-		 pos = 0;
 		 length++;
 	}
 	
@@ -183,16 +170,12 @@ public class LinkList {
             previous = current;  
             current = current.getNext();  
         }
-        if(current == null){
-        	System.out.println("failed to delete");
-        	return;
-        }
         if(current == head){          	 
             head = head.getNext();
             length--;
         } else{     	
-            Node tap = current.getNext();
-            previous.setNext(tap);
+            Node temp = current.getNext();
+            previous.setNext(temp);
             pos = 0;
             length--;
         }  
@@ -239,7 +222,7 @@ public class LinkList {
    }
    
    /*判断输入是否有效*/
-   public boolean isValueIndex(int index){
+   private boolean isValueIndex(int index){
 	   if(this.isEmpty() || index < 0 || index > length - 1){
 		   return false;
 	   }
@@ -247,15 +230,38 @@ public class LinkList {
    }
    
    /*根据index找到链表中的结点*/
-   public Node findNode(int index){
+   private Node findNode(int index){
+	   if (! this.isValueIndex(index)){
+		   System.out.println("wrong index");
+		   return null;
+	   }
 	   Node current = head;
 	   for(int pos = 0; pos < index; pos++){
 			current = current.getNext();
-			if(current == null){
-				System.out.println("input wrong index");
-				return null;
-			}
 		}
 	   return current;
    }
+   
+   /*查找链表中的所有质数结点，并返回一个LinkList*/
+   public LinkList findAllPrime(){
+	   LinkList list = new LinkList();
+	   Node current = head;
+	   for(int i = 0; i < length; i++){
+		   int data = current.getData();
+		   if(judgeisPrime(data)){
+			   list.addHeadNode(data);
+		   }
+		   current = current.getNext();
+	   }
+	   return list;
+   }
+   
+   private static boolean judgeisPrime(int testNum){
+		for(int i = 2; i < testNum/2 + 1; i++){
+			if(testNum%i == 0){
+				return false;
+			}
+		}
+		return true;
+	}		
 }
