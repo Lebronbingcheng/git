@@ -1,5 +1,7 @@
 package cn.wbc.imp;
 
+import java.util.Stack;
+
 public class BinaryTree {
 	private Integer data;
 	private BinaryTree left;
@@ -40,6 +42,26 @@ public class BinaryTree {
 		return left == null && right == null;
 	}
 	
+	//非递归前序遍历
+	public Stack<BinaryTree> preOrder(){
+		Stack<BinaryTree> stack = new Stack<BinaryTree>();
+		stack.push(this);
+		while(!stack.empty()){
+			 BinaryTree temp = (BinaryTree)stack.pop();
+			 if(temp.data != null){
+			     System.out.print(temp.data + "->");
+			 }
+			 if(temp.right != null){
+				 stack.push(temp.right);
+			 }
+			 if(temp.left != null){
+				 stack.push(temp.left);
+			 }
+		}
+		return stack;
+		
+	}
+
 	//前序遍历
 	public void preIteratorTree(){
 		if(isEmpty()){
@@ -47,18 +69,10 @@ public class BinaryTree {
 		}
 		System.out.print(data + "->");
 		if(getLeft() != null){
-			if(getLeft().isLeaf() && !getLeft().isEmpty()){
-				System.out.print(getLeft().getData() + "->");
-			}else{
-			    getLeft().preIteratorTree();
-			}
+			getLeft().preIteratorTree();
 		}
 		if(getRight() != null){
-			if(getRight().isLeaf() && !getRight().isEmpty()){
-				System.out.print(getRight().getData() + "->");
-			}else{
-			    getRight().preIteratorTree();
-			}
+			getRight().preIteratorTree();
 		}
 	}
 	
@@ -68,7 +82,7 @@ public class BinaryTree {
 			return;
 		}
 		if(getLeft() != null){
-			if(getLeft().isLeaf() && !getLeft().isEmpty()){
+			if(getLeft().isLeaf()){
 				System.out.print(getLeft().getData() + "->");
 			}else{
 			    getLeft().inIteratorTree();
@@ -76,31 +90,30 @@ public class BinaryTree {
 		}
 		System.out.print(data + "->");
 		if(getRight() != null){
-			if(getRight().isLeaf() && !getRight().isEmpty()){
+			if(getRight().isLeaf()){
 				System.out.print(getRight().getData() + "->");
 			}else{
 			    getRight().inIteratorTree();
 			}
 		}
 	}
-	
 	//后序遍历
 	public void postIteratorTree(){
 		if(isEmpty()){
 			return;
 		}
-		if(getRight() != null){
-			if(getRight().isLeaf() && !getRight().isEmpty()){
-				System.out.print(getRight().getData() + "->");
-			}else{
-			    getRight().postIteratorTree();
-			}
-		}
 		if(getLeft() != null){
-			if(getLeft().isLeaf() && !getLeft().isEmpty()){
+			if(getLeft().isLeaf()){
 				System.out.print(getLeft().getData() + "->");
 			}else{
 			    getLeft().postIteratorTree();
+			}
+		}
+		if(getRight() != null){
+			if(getRight().isLeaf()){
+				System.out.print(getRight().getData() + "->");
+			}else{
+			    getRight().postIteratorTree();
 			}
 		}
 		System.out.print(data + "->");
@@ -120,19 +133,70 @@ public class BinaryTree {
 		}
 		return Math.max(a, b) + 1;
 	}
+
+	//移除一个元素
+	public void remove(Integer data){
+		if(this.data < data){
+			this.right.remove(data);
+		}else if(this.data > data){
+			this.left.remove(data);
+		}else{
+			if(this.isLeaf()){
+				this.delete(data);
+			}
+			if(right != null ^ left != null){
+				BinaryTree tree = this.findChild();
+				int temp = tree.data;
+				BinaryTree leftOne = tree.left;
+				BinaryTree RightOne = tree.right;
+				this.delete(tree.data);
+				this.setData(temp);
+				this.setLeft(leftOne);
+				this.setRight(RightOne);
+			}
+			if(right != null && left != null){
+				BinaryTree tree = this.findMinofRight();
+				Integer temp = tree.data;
+				this.remove(tree.data);
+				this.setData(temp);
+			}
+		}
+	}
+	
+	private BinaryTree findChild(){
+		if(left != null && right == null){
+			return left;
+		}
+		if(right != null && left == null){
+			return right;
+		}
+		return null;
+	}
+	
+	private BinaryTree findMinofRight(){
+		BinaryTree tree = this.right;
+		while(tree.left != null){
+			tree = tree.left;
+		}
+		return tree;
+	}
 	
 	//删除一个子树
 	public void delete(int data){
 		if(this.data == data){
 			this.data = null;
+			left = null;
+			right = null;
 			return;
 		}
-		for(BinaryTree t : new BinaryTree[]{left,right}){
-			if(t.isLeaf() && t.data != data){
-				return;
-			}
-			t.delete(data);
-		}	
+		if(isLeaf() && this.data != data){
+			return;
+		}
+		if(this.data < data){
+			right.delete(data);
+			return;
+		}
+		left.delete(data);
 	}
 	
 	//查找一个数
@@ -151,26 +215,23 @@ public class BinaryTree {
 	}
 	
 	//插入一个数
-	public void insert(int data){
+	public boolean insert(int data){
 		if(this.data > data){
 			if(getLeft() == null){
 				setLeft(new BinaryTree(data));
-				return;
-			}else{
-				getLeft().insert(data);
+				return true;
 			}
+		    return getLeft().insert(data);
+			
 		}
 		if(this.data < data){
 			if(getRight() == null){
 				setRight(new BinaryTree(data));
-				return;
-			}else{
-				getRight().insert(data);
+				return true;
 			}
+			return getRight().insert(data);
 		}
-		if(this.data == data){
-			System.out.println("fail to insert");
-		}
+		return false;
 	}
 
 	public Integer getData() {

@@ -28,7 +28,7 @@ public class Demo2 {
 		t1.postIteratorTree();
 		System.out.println();
 		System.out.println("....................................................................");
-		t1.delete(1);
+		t1.delete(123);
 		System.out.println("after delete: ");
 		System.out.print("前序遍历 pre-travel tree： ");
 		t1.preIteratorTree();
@@ -38,8 +38,7 @@ public class Demo2 {
 		System.out.println();
 		System.out.print("后序遍历 post-travel tree： ");
 		t1.postIteratorTree();
-		System.out.println();
-		
+		System.out.println();	
 	}
 
 }

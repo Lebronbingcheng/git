@@ -9,7 +9,6 @@ public class Demo1 {
 		BinaryTree t2 = new BinaryTree(12,t4,t5);
 		BinaryTree t3 = new BinaryTree(99);
 		BinaryTree t1 = new BinaryTree(66,t2,t3);
-		
 		System.out.print("前序遍历 pre-travel tree： ");
 		t1.preIteratorTree();
 		System.out.println();
@@ -23,5 +22,7 @@ public class Demo1 {
 		System.out.println("查询结果： " + t1.check(7));
 		System.out.println("....................................................................");
 		System.out.println("树的高度： " + t1.getLevel());
+		System.out.println("....................................................................");
+		t1.preOrder();
 	}
 }
