@@ -68,11 +68,11 @@ public class BinaryTree {
 			return;
 		}
 		System.out.print(data + "->");
-		if(getLeft() != null){
-			getLeft().preIteratorTree();
+		if(left != null){
+			left.preIteratorTree();
 		}
-		if(getRight() != null){
-			getRight().preIteratorTree();
+		if(right != null){
+			right.preIteratorTree();
 		}
 	}
 	
@@ -81,40 +81,25 @@ public class BinaryTree {
 		if(isEmpty()){
 			return;
 		}
-		if(getLeft() != null){
-			if(getLeft().isLeaf()){
-				System.out.print(getLeft().getData() + "->");
-			}else{
-			    getLeft().inIteratorTree();
-			}
+		if(left != null){
+			left.inIteratorTree();
 		}
 		System.out.print(data + "->");
-		if(getRight() != null){
-			if(getRight().isLeaf()){
-				System.out.print(getRight().getData() + "->");
-			}else{
-			    getRight().inIteratorTree();
-			}
+		if(right != null){
+			right.inIteratorTree();
 		}
 	}
+	
 	//后序遍历
 	public void postIteratorTree(){
 		if(isEmpty()){
 			return;
 		}
-		if(getLeft() != null){
-			if(getLeft().isLeaf()){
-				System.out.print(getLeft().getData() + "->");
-			}else{
-			    getLeft().postIteratorTree();
-			}
+		if(left != null){
+			left.postIteratorTree();
 		}
-		if(getRight() != null){
-			if(getRight().isLeaf()){
-				System.out.print(getRight().getData() + "->");
-			}else{
-			    getRight().postIteratorTree();
-			}
+		if(right != null){
+			right.postIteratorTree();
 		}
 		System.out.print(data + "->");
 	}
@@ -136,14 +121,20 @@ public class BinaryTree {
 
 	//移除一个元素
 	public void remove(Integer data){
+		if(this.isLeaf() && this.data != data){
+			return;
+		}
 		if(this.data < data){
 			this.right.remove(data);
 		}else if(this.data > data){
 			this.left.remove(data);
-		}else{
+		}else if(this.data == data){
+			//假如需要删除的结点是叶子节点，则直接调用delete()删除即可
 			if(this.isLeaf()){
 				this.delete(data);
 			}
+			/*假如需要删除的结点有左子树或右子树中的一个，先用findChild()返回这个结点的左（右）子树，把找出的子树的信息存在temp，leftOne
+			RightOne三个引用中，随后删除子树，再把之前存储的信息赋给需要删除的结点*/
 			if(right != null ^ left != null){
 				BinaryTree tree = this.findChild();
 				int temp = tree.data;
@@ -154,6 +145,8 @@ public class BinaryTree {
 				this.setLeft(leftOne);
 				this.setRight(RightOne);
 			}
+			/*假如需要删除的结点有两个子树，那么就找出他右结点中最小的数的结点（因为这个结点一定至多有右子树），把这个节点的
+			 * 数值寄存下来，然后remove（）这个结点，然后再把刚才寄存的数值赋给要删除的结点数值*/
 			if(right != null && left != null){
 				BinaryTree tree = this.findMinofRight();
 				Integer temp = tree.data;
