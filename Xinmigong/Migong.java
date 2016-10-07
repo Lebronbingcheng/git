@@ -4,6 +4,8 @@ import java.util.Stack;
 
 public class Migong {
 	int[][] mg;
+	int end_x;
+	int end_y;
 	
 	public Migong(int[][] mg){
 		this.mg = mg;
@@ -35,61 +37,60 @@ public class Migong {
 			System.out.println();
 		}
 	}
-	Stack<Integer> map = new Stack<Integer>();
-	public void Zoumigong(int i, int j, int a, int b){
-		if(i == a && j == b){
-			for(int s = map.size() - 1; s >= 0; s -= 2){  
-                System.out.print("[" + map.get(s-1) + "," + map.get(s) + "]");  
-            }  
-            System.out.println();  
-            return;  
+
+	Stack<Point> paths = new Stack<Point>();
+	public void Zoumigong(int start_x, int start_y, int end_x, int end_y){
+		this.end_x = end_x;
+		this.end_y = end_y;
+		Zoumigong(start_x,start_y);
+	}
+	public void Zoumigong(int start_x, int start_y){
+		if(start_x == end_x && start_y == end_y){
+			for(int s = 0; s < paths.size(); s++){
+				System.out.print("[" + paths.get(s).x + "," + paths.get(s).y + "]");
+			}
+			System.out.println();
+			return;
 		}else{
-			if(right(i, j) == 0){
-				map.push(i);  
-	            map.push(j+1); 
-	            mg[i][j] = 2;
-	            mg[i][j+1] = 2;
-                Zoumigong(i, j+1, a, b);
-                mg[i][j+1] = 0;
-                mg[i][j] = 0;
-                map.pop();  
-                map.pop();  
+			if(right(start_x, start_y) == 0){
+				paths.push(new Point(start_x, start_y+1));
+	            mg[start_x][start_y] = 2;
+	            mg[start_x][start_y+1] = 2;
+                Zoumigong(start_x, start_y+1);
+                mg[start_x][start_y+1] = 0;
+                mg[start_x][start_y] = 0;
+                paths.pop();  
 			}
-			if(left(i, j) == 0){
-				map.push(i);  
-                map.push(j-1);  
-                mg[i][j-1] = 2;
-                mg[i][j] = 2;
-                Zoumigong(i, j-1, a, b);
-                mg[i][j-1] = 0;
-                mg[i][j] = 0;
-                map.pop();  
-                map.pop();  
+			if(left(start_x, start_y) == 0){
+				paths.push(new Point(start_x, start_y-1));
+                mg[start_x][start_y-1] = 2;
+                mg[start_x][start_y] = 2;
+                Zoumigong(start_x, start_y-1);
+                mg[start_x][start_y-1] = 0;
+                mg[start_x][start_y] = 0;
+                paths.pop();  
 			}
-			if(up(i, j) == 0){
-				map.push(i-1);  
-                map.push(j);  
-                mg[i-1][j] = 2;
-                mg[i][j] = 2;
-                Zoumigong(i-1, j, a, b);
-                mg[i-1][j] = 0;
-                mg[i][j] = 0;
-                map.pop();  
-                map.pop();  
+			if(up(start_x, start_y) == 0){
+				paths.push(new Point(start_x-1, start_y));
+				mg[start_x-1][start_y] = 2;
+                mg[start_x][start_y] = 2;
+                Zoumigong(start_x-1, start_y);
+                mg[start_x-1][start_y] = 0;
+                mg[start_x][start_y] = 0;
+                paths.pop();  
 			}
-			if(down(i, j) == 0){
-				map.push(i+1);  
-                map.push(j);  
-                mg[i+1][j] = 2;
-                mg[i][j] = 2;
-                Zoumigong(i+1, j, a, b);
-                mg[i+1][j] = 0;
-                mg[i][j] = 0;
-                map.pop();  
-                map.pop();  
+			if(down(start_x, start_y) == 0){
+				paths.push(new Point(start_x+1, start_y));
+                mg[start_x+1][start_y] = 2;
+                mg[start_x][start_y] = 2;
+                Zoumigong(start_x+1, start_y);
+                mg[start_x+1][start_y] = 0;
+                mg[start_x][start_y] = 0;
+                paths.pop();  
 			}
 		}
 	}
+		
 	
 	private int up(int i, int j){
 		if(i == 0){
