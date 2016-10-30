@@ -7,16 +7,22 @@ public class Queen {
 	public Queen(int n) {
 		this.n = n;
 		this.queen = new int[n];
+		for(int a : queen) {
+			a = -1;
+		}
 	}
-	
+	boolean re = false;
 	public void putQueen(int row) {
-		if(row == n) print();
+		if(row == n) {
+			print();
+			re = true;
+		}
 		else{
-			for (int col = 0; col < n; col++) {
+			for(int col = 0; col < n; col++) {
+				if(re) break;
 				if(isSafe(row, col)){
 					queen[row] = col;
 					putQueen(row + 1);
-					queen[row] = 0;
 				}
 			}
 		}
